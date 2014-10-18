@@ -1,0 +1,41 @@
+extends layout
+block content
+	a(href='/').btn.btn-warning Home
+	.container
+		.right.dash
+			h1 Users
+			ul
+				each user, i in userlist
+					li
+						a(href="mailto:#{user.email}")= user.username
+		.right.dash
+			h1 Project
+			ul
+				each projs, i in projlist
+					li
+						a(href="mailto:#{projs.users}")= projs.project
+		.right.dash
+			h1 Tasks		
+			ul
+				each user, i in userlist
+					li
+						a(href="mailto:#{user.email}")= user.username
+	.container
+		.right.dash
+			h1 Timesheet		
+			ul
+				each user, i in userlist
+					li
+						a(href="mailto:#{user.email}")= user.username
+		.right.dash
+			h1 Status		
+			ul
+				each user, i in userlist
+					li
+						a(href="mailto:#{user.email}")= user.username
+		.right.dash
+			h1 Things		
+			ul
+				each user, i in userlist
+					li
+						a(href="mailto:#{user.email}")= user.username

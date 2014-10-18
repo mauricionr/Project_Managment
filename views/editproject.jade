@@ -1,0 +1,54 @@
+extends layout
+block content
+	a(href='/').btn.btn-warning Home
+	h1= title
+	each proj, i in projectlist
+		form#editProject(role="form", method="post", action="/editproject?_id=#{proj._id}")
+			.form-group
+				label Project Name
+				input.form-control(type="text", placeholder="Name", name="projname"
+					, value="#{proj.Name}", Disable="true")
+			.form-group
+				label(for="description") Enter Description
+				input.form-control#inputdescription(type="text", placeholder="Description"
+					, name="description", value="#{proj.Description}", #{IsEnabled})
+			.form-group
+				label(for="startdate") Enter start date
+				input.form-control#inputstartdate(type="text", placeholder="start date"
+					, name="startdate", value="#{proj.StartDate}", #{IsEnabled})
+			.form-group
+				label(for="duration") Enter estimated duration
+				input.form-control#inputduration(type="text", placeholder="duration"
+					, name="duration", value="#{proj['Estimated Duration']}", #{IsEnabled})
+			.form-group
+				label(for="status") Enter Status
+				select(name="status", #{IsEnabled})
+					option(selected="Initialized") Initialized
+					option(selected="Active") Active
+					option(selected="On Hold") On Hold
+				
+			if IsEnabled
+				button#btnEdit(type="submit", name="edit") Edit Record
+			else
+				button#btnEnabler(type="submit", name="enabler") Enable Record Edit
+			button#btnDelete(type="submit", name="delete") Delete Project
+	
+	.container
+		.right.dash
+			h1 
+				a(href="newtimesheet") +Timesheets
+			if timesheetlist && timesheetlist.length > 0
+				ul
+					each timesheet, i in timesheetlist
+						li
+							a(href="/viewtimesheet?_id=#{timesheet._id}")= timesheet.Name
+		
+		.right.dash
+			h1 
+				a(href="newtask") +Tasks	
+			if tasklist && tasklist.length > 0	
+				ul
+					each task, i in tasklist
+						li
+							a(href="viewtask?_id=#{task._id}") #{task.Name}
+						

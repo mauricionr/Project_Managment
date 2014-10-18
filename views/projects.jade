@@ -1,0 +1,39 @@
+extends layout
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	
+	h1 Projects 
+	.container
+		br
+		a(href='/newproject').btn.btn-success Add New Project
+		br
+		if projectlist && projectlist.length > 0
+			table.table(border="1", cellpadding='2')
+				thead
+					tr: th Project Name
+						th Start Date
+						th Project Status
+						th Duration
+						th Project Description
+						th Created By
+						th Created On
+				tbody
+					each projs, i in projectlist
+						tr
+							td
+								a(href="/viewproject?_id=#{projs._id}") #{projs.Name}
+							td #{projs.StartDate}
+							td #{projs.Status.Name}
+							td #{projs["Estimated Duration"]}
+							td #{projs.Description}
+							td 
+								a(href="/viewuser?_id=#{projs.CreatedBy._id}") #{projs.CreatedBy.username}
+							td #{projs.EnteredOn}
+		else
+			br
+			label Unable to display any Projects

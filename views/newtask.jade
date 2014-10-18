@@ -1,0 +1,43 @@
+extends layout
+
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	
+	h1= title
+	form#AddTask(role="form", method="post", action="/addtask")
+		.form-group
+			label Task Name
+			input.form-control(type="text", placeholder="Name", name="Name")
+		.form-group
+			label(for="duration") Enter estimated duration
+			input.form-control#inputduration(type="text", placeholder="duration", name="duration")
+		.form-group
+			if curRecord.Record && curRecord.Record.length>0 && curRecord.table=='Projects'
+				label(for="Project") Selected Project
+				br
+				a(href="/viewproject?_id=#{curRecord.Record[0]._id}") #{curRecord.Record[0].Name}
+			else
+				label(for="Project") Enter Project
+				br
+				select(name="Project")
+					option(value="", selected="true") --Select Project--
+					each proj, i in projectlist
+						option(value="#{proj._id}") #{proj.Name}
+		.form-group
+			label(for="status") Enter Status:
+			br
+			select(name="status")
+				option(value="Initialized" selected="true") Initialized
+				option(value="Approved") Approved
+				option(value="In Process") In Progress
+				option(value="Completed") Completed
+				option(value="Inactivate") Inactive
+		button#btnSubmit(type="submit") submit
+			//if messges
+			//	each msg, i in messges
+			//		p #{msg.msg}

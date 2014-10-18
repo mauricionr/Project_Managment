@@ -1,0 +1,35 @@
+extends layout
+
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	
+	br
+	h1.
+		Welcome #{currentUser.username}
+	if currentUser.Role==='Admin'
+		a(href='/users').btn.btn-primary View User Accounts
+		a(href='/projects').btn.btn-primary View Projects
+		a(href='/tasks').btn.btn-primary View Tasks
+		a(href='/timesheets').btn.btn-primary View Timesheets
+		br
+		br
+		a(href='/newuser').btn.btn-success Add User Account
+		a(href='/newproject').btn.btn-success Create Project
+		a(href='/newtask').btn.btn-success Create Task
+		a(href='/newtimesheet').btn.btn-success Create Timesheet
+	else if currentUser.Role==='Supervisor'
+		a(href='/users').btn.btn-primary View User Accounts
+		a(href='/projects').btn.btn-primary View Projects
+		a(href='/tasks').btn.btn-primary View Tasks
+		a(href='/timesheets').btn.btn-primary View Timesheets
+	else
+		a(href='/viewuser?_id=#{currentUser._id}').btn.btn-primary View My Account info
+		a(href='/tasks').btn.btn-primary View My Tasks
+		a(href='/timesheets').btn.btn-primary View My Timesheets
+	br
+	br
+	a(href='/dashboard').btn.btn-warning See Dashboard

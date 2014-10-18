@@ -1,0 +1,35 @@
+extends layout
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	
+	.container
+		h1 Users 
+		br
+		a(href='/newuser').btn.btn-success + New User
+		br
+		if users && users.length > 0
+			table.table(border="1", cellpadding='2')
+				thead
+					tr: th username
+						th email
+						th password
+						th Status
+						th Role
+						th Added On
+				tbody
+					each user, i in users
+						tr
+							td 
+								a(href="/viewuser?_id=#{user._id}") #{user.username}
+							td #{user.email}
+							td #{user.password}
+							td #{user.status}
+							td #{user.Role}
+							td #{user.EnteredOn}
+		else
+			Unable to display any Users

@@ -1,0 +1,45 @@
+extends layout
+
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	h1= title
+	form#AddTimesheet(role="form", method="post", action="/addtimesheet")
+		.form-group
+			label Timesheet Name
+			input.form-control(type="text", placeholder="Name", name="timesheetname")
+		.form-group
+			label(for="starttime") Enter Start Time
+			input.form-control#inputStartTime(type="text", placeholder="Start Time"
+				, name="starttime")
+		.form-group
+			label(for="endtime") Enter End Time
+			input.form-control#inputEndTime(type="text", placeholder="End Time", name="endtime")
+		.form-group
+			label(for="description") Enter Work Description
+			textarea.form-control#inputWorkDescription(type="text", placeholder="Work Description"
+				, name="description")
+		.form-group
+			if curRecord.Record && curRecord.Record.length>0 && curRecord.table=='Tasks'
+				label() Selected Task
+				br
+				a(href="/viewtask?_id=#{curRecord.Record[0]._id}") #{curRecord.Record[0].Name}
+			else
+				label(for="Task") Enter task
+				br
+				select(name="Task")
+					each task, i in tasklist
+						option(selected="#{task._id}") #{task.Name}		
+		.form-group
+			label(for="status") Enter Status
+			br
+			select(name="status")
+				option(value="Initialized" selected="selected") Initialized
+				option(value="Complete") Completed
+				option(value="Approved") Approved
+				option(value="Paid Out") Paid Out	
+		button#btnSubmit(type="submit") submit	

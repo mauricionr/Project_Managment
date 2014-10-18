@@ -1,0 +1,46 @@
+extends layout
+
+block content
+	if currentUser.Role==='Admin'
+		.right.dash
+			a(href='/logout').btn.btn-danger Logout
+			a.btn(href='/').btn-warning Home
+		label User: #{currentUser.username}
+		label    |    
+		label Role: #{currentUser.Role}
+
+	h1= title
+	form#AddUser(role="form", method="post",action="/adduser")
+		.form-group
+			label Enter User Name
+			input.form-control(type="text", placeholder="username", name="username")
+		.form-group
+			label(for="useremail") Enter Email Address
+			input.form-control#inputUserEmail(type="text", placeholder="user email"
+				, name="useremail")
+		.form-group
+			label(for="userpassword") Enter Password
+			input.form-control#inputUserPassword(type="password"
+				, placeholder="user password", name="userpassword")
+		.form-group
+			label(for="userpasswordvalid") Confirm Password
+			input.form-control#inputUserPasswordValid(type="password"
+				, placeholder="confirm user password", name="userpasswordvalid")
+		.form-group
+			label(for="status") Enter Status
+			select(name="status")
+				option(value="Initialized", selected="selected") Initialized
+				option(value="Active") Active
+				option(value="Locked Out") Locked Out
+				
+		.form-group
+			label(for="role") Enter Role
+			select(name="role")
+				option(value="Admin") Admin
+				option(value="Supervisor") Supervisor
+				option(value="Contractor", selected="selected") Contractor
+				
+		button#btnSubmit(type="submit") submit
+		if messges
+			each msg, i in messges
+				p #{msg.msg}	

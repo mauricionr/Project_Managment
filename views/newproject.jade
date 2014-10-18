@@ -1,0 +1,34 @@
+extends layout
+
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	h1= title
+	form#AddProject(role="form", method="post", action="/addproject")
+		.form-group
+			label Project Name
+			input.form-control(type="text", placeholder="Name", name="projname")
+		.form-group
+			label(for="description") Enter Description
+			textarea.form-control#inputdescription(type="text", placeholder="Description", name="description")
+		.form-group
+			label(for="startdate") Enter start date
+			input.form-control#inputstartdate(type="text", placeholder="start date", name="startdate")
+		.form-group
+			label(for="duration") Enter estimated duration
+			input.form-control#inputduration(type="text", placeholder="duration", name="duration")
+		.form-group
+			label(for="status") Enter Status
+			select(name="status")
+				option(value="Initialized", selected="selected") Initialized
+				option(value="Active") Active
+				option(value="On Hold") On Hold
+
+		button#btnSubmit(type="submit") submit
+		if messges
+			each msg, i in messges
+				p #{msg.msg}

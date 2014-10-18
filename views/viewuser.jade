@@ -1,0 +1,91 @@
+extends layout
+
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	h1= title
+	each user, i in userlist
+		form#AddUser(role="form", method="post",action="/edituser?_id=#{user._id}")
+			.form-group
+				label Enter User Name
+				if IsEnabled===true
+					input.form-control#inputUserName(type="text", placeholder="username"
+						, name="username" value="#{user.username}")
+				else
+					input.form-control#inputUserName(type="text", placeholder="username"
+						, name="username" value="#{user.username}" Disabled)
+				
+				label(for="useremail") Enter Email Address
+				if IsEnabled===true
+					input.form-control#inputUserEmail(type="text", placeholder="email", name="useremail", value="#{user.email}")			
+				else 
+					input.form-control#inputUserEmail(type="text", placeholder="email", 
+						name="useremail", value="#{user.email}", Disabled)				
+				
+				label(for="userpassword") Enter Password
+				if IsEnabled===true
+					input.form-control#inputUserPassword(type="password", value="#{user.password}"
+						, placeholder="user password", name="userpassword")
+				else
+					input.form-control#inputUserPassword(type="password", value="#{user.password}"
+						, placeholder="userpassword", name="userpassword", Disabled)
+										
+			.form-group
+				if IsEnabled===true
+					label(for="status") Enter Status:
+					select(name="status", value="#{user.status}")
+						option(value="Initialized", selected=user.status=="Initialized") Initialized
+						option(value="Active", selected=user.status=="Active") Active
+						option(value="Locket Out", selected=user.status=="Locked Out") Locked Out
+						
+					label(for="role") Enter Role:
+					select(name="role", value="#{user.Role}")
+						option(value="Admin", selected=(user.Role=="Admin")) Admin
+						option(value="Supervisor", selected=(user.Role=="Supervisor")) Supervisor
+						option(value="Contractor", selected=(user.Role=="Contractor")) Contractor
+				else
+					label(for="status") Status
+					input.form-control#inputUserStatus(type="text", value="#{user.status}"
+						, name="status" Disabled)
+					label(for="role") Role
+					input.form-control#inputUserStatus(type="text", value="#{user.Role}"
+						, name="role" Disabled)										
+			.form-group
+				if IsEnabled===true
+					button#btnSubmit(type="submit", name="edit") Edit User
+				else
+					button#btnEnabler(type="submit", name="enabler") Enable Edit
+				//button#btnChangePass(type="submit", name="changepass") Change password
+				//button#btnUnlock(type="submit", name="unlock") Unlock Account
+				button#btnUnlock(type="submit", name="delete") Delete Account
+	<br />	
+	label Related Lists:
+	.container
+		.right.dash
+			h3 
+					a(href="newtimesheet") +Timesheets
+			if timesheetlist && timesheetlist.length > 0
+				ul
+					each timesheet, i in timesheetlist
+						li
+							a(href="/viewtimesheet?_id=#{timesheet._id}")= timesheet.Name
+		.right.dash
+			h3 
+				a(href="newtask") +Tasks
+			if tasklist && tasklist.length > 0		
+				ul
+					each task, i in tasklist
+						li
+							a(href="viewtask?_id=#{task._id}") #{task.Name}
+		.right.dash
+			h3 
+				a(href="newproject") +Projects
+			if projectlist && projectlist.length > 0
+				ul
+					each projs, i in projectlist
+						li
+							a(href="/viewproject?_id=#{projs._id}")= projs.Name

@@ -1,0 +1,89 @@
+extends layout
+
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	h1= title
+	each timesheet, i in timesheetlist
+		form#AddUser(role="form", method="post",action="/edittimesheet?_id=#{timesheet._id}")
+			.form-group
+				label Name
+				if IsEnabled===true
+					input.form-control#inputName(type="text", placeholder="Name"
+						, name="timesheetname" value="#{timesheet.Name}")
+				else
+					input.form-control#inputUserName(type="text", placeholder="Name"
+						, name="timesheetname" value="#{timesheet.Name}" Disabled)
+			
+				label(for="description") Enter Work Description
+				if IsEnabled===true
+					input.form-control#inputDescription(type="text", placeholder="Work Description", 
+						name="description", value="#{timesheet['Work Description']}")			
+				else
+					input.form-control#inputDescription(type="text", placeholder="Work Description", 
+						name="description", value="#{timesheet['Work Description']}" Disabled)				
+			
+				label(for="start") Enter Start Time
+				if IsEnabled===true
+					input.form-control#inputStart(type="text", value="#{timesheet['Start Time']}"
+						, placeholder="Start Time", name="start")
+				else
+					input.form-control#inputStart(type="text", value="#{timesheet['Start Time']}"
+						, placeholder="Start Time", name="start" Disabled)
+		
+				label(for="end") Enter End Time
+				if IsEnabled===true
+					input.form-control#inputEnd(type="text", value="#{timesheet['End Time']}"
+						, placeholder="End Time", name="end")
+				else
+					input.form-control#inputEnd(type="text", value="#{timesheet['End Time']}"
+						, placeholder="End Time", name="end" Disabled)
+																
+			.form-group
+				label(for="status") Enter Status
+				if IsEnabled===true
+					select(name="status", value="#{timesheet.Status}")
+						option(value="Initialized", selected=timesheet.Status=="Initialized") Initialized
+						option(value="Completed", selected=timesheet.Status=="Completed") Completed
+						option(value="Approved", selected=timesheet.Status=="Approved") Approved
+						option(value="Paid Out", selected=timesheet.Status=="Paid Out") Paid Out
+				else
+					input.form-control#inputStatus(type="text", value="#{timesheet.Status}"
+						, name="status" Disabled)					
+			.form-group
+				if IsEnabled===true
+					button#btnSubmit(type="submit", name="edit") Edit Record
+				else
+					button#btnEnabler(type="submit", name="enabler") Enable Edit
+				button#btnUnlock(type="submit", name="delete") Delete Account
+	<br />	
+	label Related Lists:
+	.container
+		.right.dash
+			h3 
+				a(href="newtask") +Tasks
+			if tasklist && tasklist.length > 0		
+				ul
+					each task, i in tasklist
+						li
+							a(href="viewtask?_id=#{task._id}") #{task.Name}
+		.right.dash
+			h3 
+				a(href="newproject") +Projects
+			if projectlist && projectlist.length > 0
+				ul
+					each projs, i in projectlist
+						li
+							a(href="/viewproject?_id=#{projs._id}")= projs.Name
+		.right.dash
+			h3 
+				a(href="/newuser") +Users
+			if userlist && userlist.length > 0	
+				ul
+					each user, i in userlist
+						li
+							a(href="/viewuser?_id=#{user._id}") #{user.username}

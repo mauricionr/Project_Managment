@@ -1,0 +1,40 @@
+extends layout
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	
+	.container
+		h1 Timesheets
+		br
+		a(href='/newtimesheet').btn.btn-success + New Timesheet
+		br
+		if timesheetlist && timesheetlist.length > 0
+			table.table(border="1", cellpadding='2')
+				thead
+					tr: th Name
+						th Work Description
+						th Start Time
+						th End Time
+						th Status
+						th Associated Task
+						th Associated User
+				tbody
+					each timesheet, i in timesheetlist
+						tr
+							td
+								a(href="/viewtimesheet?_id=#{timesheet._id}") #{timesheet.Name}
+							td #{timesheet["Work Description"]}
+							td #{timesheet["Start Time"]}
+							td #{timesheet["End Time"]}
+							td #{timesheet.Status}
+							td
+								a(href="/viewtask?_id=#{timesheet.Task._id}") #{timesheet.Task.Name}
+							td
+								a(href="/viewuser?_id=#{timesheet.user._id}") #{timesheet.user.username}
+		else
+			br
+			label Unable to display any Timesheets

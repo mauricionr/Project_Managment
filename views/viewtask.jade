@@ -1,0 +1,92 @@
+extends layout
+
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	h1= title
+	each task, i in tasklist
+		form#AddTask(role="form", method="post", action="/edittask?_id=#{task._id}")
+			.form-group
+				label Task Name
+				if IsEnabled===true
+					input.form-control(type="text", placeholder="Name", name="Name",
+						value="#{task.Name}")
+				else
+					input.form-control(type="text", placeholder="Name", name="Name",
+						value="#{task.Name}" Disabled)				
+			.form-group
+				label(for="project") Associated Project
+				br
+				if IsEnabled===true
+					select(name="Project")
+						each proj, i in projectlist
+							option(value=proj._id selected=task.Project._id==proj._id) #{task.Project.Name}
+				else
+					a(href="/viewproject?_id=#{task.Project._id}")= task.Project.Name
+					
+			.form-group
+				label(for="duration") Enter estimated duration
+				if IsEnabled===true
+					input.form-control#inputduration(type="text", placeholder="duration"
+						, name="duration", value="#{task.EstimatedDuration}")
+				else
+					input.form-control#inputduration(type="text", placeholder="duration", 
+						name="duration", value="#{task.EstimatedDuration}" Disabled)				
+			.form-group
+				label(for="clockedTime") Clocked Time
+				if IsEnabled===true
+					input.form-control#inputclockedTime(type="text", placeholder="Clocked Time"
+						, name="clockedTime", value="#{task.ClockedTime}")
+				else
+					input.form-control#inputclockedTime(type="text", placeholder="Clocked Time", 
+						name="clockedTime", value="#{task.ClockedTime}" Disabled)				
+			.form-group
+				label(for="status") Enter Status
+				if IsEnabled===true
+					select(name="status", value="#{task.Status}")
+						option(value="Initialized", selected=task.Status=="Initialized") Initialized
+						option(value="Approved", selected=task.Status=="Approved") Approved
+						option(value="In Progress", selected=task.Status=="In Progress") In Progress
+						option(value="Completed", selected=task.Status=="Completed") Completed
+						option(value="Inactive", selected=task.Status=="Inactive") Inactive
+				else
+					label(for="status") Enter Status
+					input.form-control#inputStatus(type="text"
+						, name="status", value="#{task.Status}" Disabled)			
+			.form-group
+				if IsEnabled===true
+					button#btnSubmit(type="submit", name="edit") Edit Record
+				else
+					button#btnEnabler(type="submit", name="enabler") Enable Edit
+				button#btnDelete(type="submit", name="delete") Delete Record
+	br
+	label Related Lists:		
+	.container
+		.right.dash
+			h3 
+				a(href="newtimesheet") +Timesheets
+			if timesheetlist && timesheetlist.length > 0
+				ul
+				each timesheet, i in timesheetlist
+					li
+						a(href="viewtimesheet?_id=#{timesheet._id}")= timesheet.Name
+		.right.dash
+			h3 
+				a(href="/newuser") +Users
+			if userlist && userlist.length > 0	
+				ul
+					each user, i in userlist
+						li
+							a(href="/viewuser?_id=#{user._id}") #{user.username}
+		.right.dash
+			h3 
+				a(href="newproject") +Projects
+			if projectlist && projectlist.length > 0
+				ul
+					each projs, i in projectlist
+						li
+							a(href="/viewproject?_id=#{projs._id}")= projs.Name

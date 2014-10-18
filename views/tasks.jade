@@ -1,0 +1,33 @@
+extends layout
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	
+	.container
+		h1 Tasks 
+		br
+		a(href='/newtask').btn.btn-success + New Task
+		br
+		br
+		if tasklist && tasklist.length > 0
+			table.table(border="1", cellpadding='2')
+				thead
+					tr: th Name
+						th Est Duration
+						th Status
+						th Project
+				tbody
+					each task, i in tasklist
+						tr
+							td
+								a(href="/viewtask?_id=#{task._id}") #{task.Name}
+							td #{task.EstimatedDuration}
+							td #{task.Status}
+							td 
+								a(href="/viewproject?_id=#{task.Project._id}") #{task.Project.Name}
+		else
+			label Unable to display any tasks

@@ -1,0 +1,89 @@
+extends layout
+
+block content
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	a(href="/viewuser?_id=#{currentUser._id}") User: #{currentUser.username}
+	label    -->    
+	label Role: #{currentUser.Role}
+	
+	h1= title
+	each proj, i in projectlist
+		form#editProject(role="form", method="post", action="/editproject?_id=#{proj._id}")
+			.form-group
+				label Project Name
+				if IsEnabled===true
+					input.form-control(type="text", placeholder="Name", name="projname", value="#{proj.Name}")
+				else
+					input.form-control(type="text", placeholder="Name", name="projname"
+						, value="#{proj.Name}", Disabled)					
+			.form-group
+				label(for="description") Enter Description
+				if IsEnabled===true
+					input.form-control#inputdescription(type="text", placeholder="Description"
+						, name="description", value="#{proj.Description}")
+				else
+					input.form-control#inputdescription(type="text", placeholder="Description"
+						, name="description", value="#{proj.Description}", Disabled)
+			.form-group
+				label(for="startdate") Enter start date
+				if IsEnabled===true
+					input.form-control#inputstartdate(type="text", placeholder="start date"
+						, name="startdate", value="#{proj.StartDate}")
+				else
+					input.form-control#inputstartdate(type="text", placeholder="start date"
+						, name="startdate", value="#{proj.StartDate}", Disabled)
+			.form-group
+				label(for="duration") Enter estimated duration
+				if IsEnabled===true
+					input.form-control#inputduration(type="text", placeholder="duration"
+						, name="duration", value="#{proj['Estimated Duration']}")
+				else
+					input.form-control#inputduration(type="text", placeholder="duration", name="duration", value="#{proj['Estimated Duration']}", Disabled)				
+			.form-group
+				if IsEnabled===true
+					label(for="status") Enter Status
+					select(name="status" value="{proj.Status}")
+						option(value="Initialized", selected=proj.Status=="Initialized") Initialized
+						option(value="Active", selected=proj.Status=="Active") Active
+						option(value="On Hold", selected=proj.Status=="On Hold") On Hold
+				else
+					label(for="status") Status
+					input.form-control#inputUserStatus(type="text", value="#{proj.Status}"
+						, name="status" Disabled)
+						
+			if currentUser.Role==='Admin'
+				if IsEnabled===true
+					button#btnEdit(type="submit", name="edit") Edit Record
+				else
+					button#btnEnabler(type="submit", name="enabler") Enable Record Edit
+				button#btnDelete(type="submit", name="delete") Delete Project
+	br
+	label Related Lists:	
+	.container
+		.right.dash
+			h3 
+				a(href="newtimesheet") +Timesheets
+			if timesheetlist && timesheetlist.length > 0
+				ul
+					each timesheet, i in timesheetlist
+						li
+							a(href="/viewtimesheet?_id=#{timesheet._id}")= timesheet.Name
+		.right.dash
+			h3 
+				a(href="newtask") +Tasks	
+			if tasklist && tasklist.length > 0	
+				ul
+					each task, i in tasklist
+						li
+							a(href="viewtask?_id=#{task._id}")  #{task.Name}
+		.right.dash
+			h3 
+				a(href="/newuser") +Users
+			if userlist && userlist.length > 0	
+				ul
+					each user, i in userlist
+						li
+							a(href="/viewuser?_id=#{user._id}") #{user.username}
+						
